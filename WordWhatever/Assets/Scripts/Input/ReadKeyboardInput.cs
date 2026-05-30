@@ -6,6 +6,7 @@ public class ReadKeyboardInput : MonoBehaviour
 {
     [Header("[== REFERENCES ==]")]
     [SerializeField] private TMP_Text canvasText;
+    [SerializeField] public wordCheck wordChecker;
 
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;
@@ -72,6 +73,13 @@ public class ReadKeyboardInput : MonoBehaviour
     private void OnEnter(InputAction.CallbackContext context)
     {
         submitted = true;
-        canvasText.color = Color.green;
+        if (wordChecker.IsValidWord(canvasText.text))
+        {
+            canvasText.color = Color.green;
+        }
+        else
+        {
+            canvasText.color = Color.black;
+        }
     }
 }
