@@ -199,8 +199,8 @@ Camera:
   m_GameObject: {fileID: 264479601}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -472,7 +472,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 1500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1721513324
 MonoBehaviour:
@@ -494,7 +494,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: testing!
+  m_text: 'you can delete me with [ BACKSPACE ]
+
+    press [ ENTER ] to submit this
+    text
+
+
+    amaze amaze amaze!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0068713ac3108ea478faaf76bfbe8785, type: 2}
   m_sharedMaterial: {fileID: 3987946855937663755, guid: 0068713ac3108ea478faaf76bfbe8785, type: 2}
@@ -521,8 +527,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -604,6 +610,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReadKeyboardInput
   canvasText: {fileID: 1721513324}
+  initialDelay: 0.4
+  repeatDelay: 0.05
 --- !u!4 &1960189383
 Transform:
   m_ObjectHideFlags: 0
