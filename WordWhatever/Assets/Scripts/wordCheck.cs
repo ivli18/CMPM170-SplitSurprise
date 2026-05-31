@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Xml.Schema;
 
 public class WordCheck : MonoBehaviour
 {
@@ -37,6 +38,16 @@ public class WordCheck : MonoBehaviour
             }
         }
         return false;
+    }
+    public string GetRandomWord(int minLength = 4)
+    {
+        List<string> pool = new List<string>();
+        foreach (string word in validWords)
+        {
+            if (word.Length >= minLength) pool.Add(word);
+        }
+        if (pool.Count == 0) { return null; }
+        return pool[Random.Range(0, pool.Count)];
     }
 
     public bool IsValidWord(string guess) => validWords.Contains(guess.ToLower());
