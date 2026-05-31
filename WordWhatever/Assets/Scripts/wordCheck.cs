@@ -1,30 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class wordCheck : MonoBehaviour
+public class WordCheck : MonoBehaviour
 {
+    [Header("[== REFERENCES ==]")]
+    [SerializeField] private TextAsset vocabularyList;
+
     private HashSet<string> validWords = new HashSet<string>();
-    void Start()
-    {
-        LoadDictionary();
-    }
-    void LoadDictionary()
-    {
-        TextAsset dictFile = Resources.Load<TextAsset>("dictionary");
-        string[] lines = dictFile.text.Split('\n');
+    private void Start() => LoadDictionary();
 
-        foreach (string line in lines)
-        {
-            string word = line.Trim().ToLower();
-            if (!string.IsNullOrEmpty(word))
-            {
-                validWords.Add(word);
-            }
-        }
+    private void LoadDictionary()
+    {
+        string[] lines = vocabularyList.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
+        foreach (string line in lines) validWords.Add(line.Trim().ToLower());
     }
 
-    public bool IsValidWord(string guess)
-    {
-        return validWords.Contains(guess.ToLower());
-    }
+    public bool IsValidWord(string guess) => validWords.Contains(guess.ToLower());
 }

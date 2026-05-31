@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,18 +7,22 @@ public class ReadKeyboardInput : MonoBehaviour
 {
     [Header("[== REFERENCES ==]")]
     [SerializeField] private TMP_Text canvasText;
-    [SerializeField] public wordCheck wordChecker;
+    [SerializeField] private TMP_Text previousWordText;
+    [SerializeField] private ScoringSystem scoreSystem;
 
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;
     [SerializeField] private float repeatDelay = 0.025f;
 
     private InputActions inputActions;
-    private bool submitted = false;
     private bool backspaceHeld;
     private float nextDeleteTime;
 
-    private void Awake() => inputActions = new InputActions();
+    private void Awake()
+    {
+        inputActions = new InputActions();
+        canvasText.text = "";
+    }
 
     private void OnEnable()
     {
@@ -49,7 +54,7 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void Update()
     {
-        if (!backspaceHeld || submitted) return;
+        if (!backspaceHeld) return;
         if (Time.time >= nextDeleteTime)
         {
             DeleteCharacter();
@@ -64,7 +69,6 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnTextInput(char c)
     {
-        if (submitted) return;
         if (c == '\b' || c == '\r' || c == '\n') return;
         if (!char.IsLetter(c)) return; // we don't care about spaces, only letters!
         canvasText.text += char.ToUpper(c);
@@ -72,14 +76,15 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnEnter(InputAction.CallbackContext context)
     {
-        submitted = true;
-        if (wordChecker.IsValidWord(canvasText.text))
+        switch(scoreSystem.CalculateScore(canvasText.text))
         {
-            canvasText.color = Color.green;
-        }
-        else
-        {
-            canvasText.color = Color.black;
+            case true:
+                previousWordText.text = canvasText.text;
+                canvasText.text = "";
+                break;
+            case false:
+                canvasText.color = Color.red;
+                break;
         }
     }
 }
