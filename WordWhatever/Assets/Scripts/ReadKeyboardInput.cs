@@ -10,6 +10,7 @@ public class ReadKeyboardInput : MonoBehaviour
     [SerializeField] private TMP_Text previousWordText;
     [SerializeField] private ScoringSystem scoreSystem;
 
+
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;
     [SerializeField] private float repeatDelay = 0.025f;
@@ -65,6 +66,7 @@ public class ReadKeyboardInput : MonoBehaviour
     private void DeleteCharacter()
     {
         if (canvasText.text.Length > 0) canvasText.text = canvasText.text[..^1];
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.DeleteSFX);
     }
 
     private void OnTextInput(char c)
@@ -72,6 +74,7 @@ public class ReadKeyboardInput : MonoBehaviour
         if (c == '\b' || c == '\r' || c == '\n') return;
         if (!char.IsLetter(c)) return; // we don't care about spaces, only letters!
         canvasText.text += char.ToUpper(c);
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.TypeSFX);    
     }
 
     private void OnEnter(InputAction.CallbackContext context)
@@ -81,9 +84,11 @@ public class ReadKeyboardInput : MonoBehaviour
             case true:
                 previousWordText.text = canvasText.text;
                 canvasText.text = "";
+                AudioManager.Instance.PlaySFX(AudioManager.SFXType.ValidSFX);
                 break;
             case false:
                 canvasText.color = Color.red;
+                AudioManager.Instance.PlaySFX(AudioManager.SFXType.InvalidSFX);
                 break;
         }
     }
