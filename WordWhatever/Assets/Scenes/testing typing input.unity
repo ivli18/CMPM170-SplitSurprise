@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b30a0c2c56746e34bba12db1f1f55e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  wordCheck: {fileID: 1960189384}
+  wordCheck: {fileID: 1960189386}
   startingWord: {fileID: 800306015}
   endingWord: {fileID: 1717215200}
 --- !u!4 &333443556
@@ -635,7 +635,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLACEHOLDER
+  m_text: START PLACEHOLDER
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0068713ac3108ea478faaf76bfbe8785, type: 2}
   m_sharedMaterial: {fileID: 3987946855937663755, guid: 0068713ac3108ea478faaf76bfbe8785, type: 2}
@@ -1304,7 +1304,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLACEHOLDER
+  m_text: END PLACEHOLDER
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0068713ac3108ea478faaf76bfbe8785, type: 2}
   m_sharedMaterial: {fileID: 3987946855937663755, guid: 0068713ac3108ea478faaf76bfbe8785, type: 2}
@@ -1531,8 +1531,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1960189383}
   - component: {fileID: 1960189382}
-  - component: {fileID: 1960189384}
   - component: {fileID: 1960189385}
+  - component: {fileID: 1960189386}
   m_Layer: 0
   m_Name: GameSystems
   m_TagString: Untagged
@@ -1552,9 +1552,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a009979d6bd804b9871f31301e4ccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReadKeyboardInput
+  gameManager: {fileID: 333443555}
+  scoreSystem: {fileID: 1960189385}
   canvasText: {fileID: 448575863}
   previousWordText: {fileID: 1721513324}
-  scoreSystem: {fileID: 1960189385}
   initialDelay: 0.4
   repeatDelay: 0.05
 --- !u!4 &1960189383
@@ -1572,19 +1573,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1960189384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1960189381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53b199699ecce943b4870256818a42e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WordCheck
-  vocabularyList: {fileID: 4900000, guid: fa3aede2e338d0047b75b9e31f400a90, type: 3}
 --- !u!114 &1960189385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1597,9 +1585,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4305ae0f3f665f24c89bae33aa6e76cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoringSystem
+  gameManager: {fileID: 333443555}
   scoreText: {fileID: 297622425}
-  wordChecker: {fileID: 1960189384}
-  defaultLetterCount: 2
+  wordChecker: {fileID: 1960189386}
+--- !u!114 &1960189386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960189381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b53b199699ecce943b4870256818a42e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WordCheck
+  vocabularyList: {fileID: 4900000, guid: fa3aede2e338d0047b75b9e31f400a90, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

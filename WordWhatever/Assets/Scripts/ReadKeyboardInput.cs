@@ -1,15 +1,16 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ReadKeyboardInput : MonoBehaviour
 {
-    [Header("[== REFERENCES ==]")]
-    [SerializeField] private TMP_Text canvasText;
-    [SerializeField] private TMP_Text previousWordText;
+    [Header("[== SYSTEM REFERENCES ==]")]
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private ScoringSystem scoreSystem;
 
+    [Header("[== TEXT OBJ REFERENCES ==]")]
+    [SerializeField] private TMP_Text canvasText;
+    [SerializeField] private TMP_Text previousWordText;
 
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;

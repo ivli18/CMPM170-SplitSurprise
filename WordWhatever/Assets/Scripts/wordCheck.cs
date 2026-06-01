@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Xml.Schema;
+using System.Linq;
 
 public class WordCheck : MonoBehaviour
 {
@@ -26,11 +26,12 @@ public class WordCheck : MonoBehaviour
         return false;
     }
 
-    private bool ContainsLettersInOrder(string word, List<char> letters)
+    public bool ContainsLettersInOrder(string word, List<char> letters)
     {
         int letterIndex = 0;
-        foreach (char c in word)
+        foreach (char c in word.ToLower())
         {
+            Debug.Log($"{c} == {letters[letterIndex]}: {c == letterIndex}");
             if (c == letters[letterIndex])
             {
                 letterIndex++;
@@ -39,15 +40,62 @@ public class WordCheck : MonoBehaviour
         }
         return false;
     }
+
+    public List<string> GetWordsStartingWith(string prefix)
+    {
+        List<string> matches = new List<string>();
+        foreach (string word in validWords)
+        {
+            if (word.ToLower().StartsWith(prefix.ToLower()))
+                matches.Add(word);
+        }
+        return matches;
+    }
+
     public string GetRandomWord(int minLength = 4)
     {
         List<string> pool = new List<string>();
         foreach (string word in validWords)
         {
-            if (word.Length >= minLength) pool.Add(word);
+            if (word.Length >= minLength)
+                pool.Add(word);
         }
         if (pool.Count == 0) { return null; }
         return pool[Random.Range(0, pool.Count)];
+    }
+
+    public string GetRandomWordStartingWith(string starting, int minLength = 4)
+    {
+        List<string> pool = new List<string>();
+        foreach (string word in validWords)
+        {
+            if (word.Length >= minLength && word.ToLower().StartsWith(starting.ToLower()))
+                pool.Add(word);
+        }
+        if (pool.Count == 0) return null;
+        return pool[Random.Range(0, pool.Count)];
+    }
+
+    /*public int ChooseLetterNumber(string word) => defaultLetterCount + (word.Length / 4);*/
+
+    public List<char> GetChosenLetters(int letterCount, string word)
+    {
+        // thank you to this stackoverflow post for the algorithm :)
+        // https://stackoverflow.com/questions/1450774/splitting-a-string-into-chunks-of-a-certain-size
+        IEnumerable<string> splitWord
+            = Enumerable.Range(0, letterCount)
+            .Select(i => word.Substring(i * letterCount, letterCount));
+        List<char> possibleLetters = new List<char>();
+        while (true)
+        {
+            possibleLetters.Clear();
+            foreach (string section in splitWord)
+                possibleLetters.Add(
+                    section[Random.Range(0, section.Length)]
+                );
+            if (IsPossible(possibleLetters))
+                return new List<char>(possibleLetters);
+        }
     }
 
     public bool IsValidWord(string guess) => validWords.Contains(guess.ToLower());
