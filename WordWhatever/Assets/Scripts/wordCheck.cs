@@ -103,6 +103,24 @@ public class WordCheck : MonoBehaviour
         }
     }
 
-    public bool IsValidWord(string guess)
-        => validWords.Contains(guess.ToLower());
+    public bool IsValidWord(string guess) => validWords.Contains(guess.ToLower());
+
+    public string ReturnWithColor(string word, List<char> letters)
+    {
+        string result = "";
+        int letterIndex = 0;
+        foreach (char c in word)
+        {
+            if (letterIndex < letters.Count && char.ToLower(c) == char.ToLower(letters[letterIndex]))
+            {
+                result += $"<color=yellow>{c}</color>";
+                letterIndex++;
+            }
+            else
+            {
+                result += c;
+            }
+        }
+        return result;
+    }
 }

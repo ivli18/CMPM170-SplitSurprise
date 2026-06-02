@@ -881,7 +881,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40ef5b4d204d804e85efcea28ceec94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  musicSounds: []
+  musicSounds:
+  - volume: 0.5
+    loop: 1
+    type: 0
+    clip: {fileID: 8300000, guid: 9c6e1534129c8e847b16ef71cfb33200, type: 3}
   sfxSounds:
   - volume: 0.5
     loop: 0

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class ReadKeyboardInput : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class ReadKeyboardInput : MonoBehaviour
     private InputActions inputActions;
     private bool backspaceHeld;
     private float nextDeleteTime;
+    private Color originalColor = Color.white;
 
     private void Awake()
     {
@@ -92,9 +94,19 @@ public class ReadKeyboardInput : MonoBehaviour
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.ValidSFX);
                 break;
             case false:
-                guessText.color = Color.red;
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.InvalidSFX);
+                StartCoroutine(FlashRed2());
                 break;
         }
+    }
+    IEnumerator FlashRed2()
+    {
+        canvasText.color = Color.red;
+        yield return new WaitForSeconds(0.15f);
+        canvasText.color = originalColor;
+        yield return new WaitForSeconds(0.05f);
+        canvasText.color = Color.red;
+        yield return new WaitForSeconds(0.15f);
+        canvasText.color = originalColor;
     }
 }
