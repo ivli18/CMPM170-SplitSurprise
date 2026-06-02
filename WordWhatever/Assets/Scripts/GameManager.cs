@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text endingWord;
 
     [Header("[== SETTINGS ==]")]
+    [SerializeField] private Color highlightColor = Color.yellow;
     [SerializeField] private Color originalColor = Color.white;
     [SerializeField] private Color incorrectColor = Color.red;
 
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     private List<char> chosenLetters;
     private List<string> submittedWords = new List<string>();
 
+    public Color HighlightColor => highlightColor;
     public Color OriginalColor => originalColor;
     public Color IncorrectColor => incorrectColor;
     public string StartWord => startWord;
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
 
         // then, generate startWord
         startWord = wordCheck.GetRandomWord();
-        chosenLetters = wordCheck.GetChosenVowels(2, startWord);
+        chosenLetters = wordCheck.GetInitChosenVowels(2, startWord);
         startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);
         Debug.Log($"CHOSEN LETTERS: {string.Join(" ", chosenLetters).ToUpper()}");
 
@@ -55,9 +57,14 @@ public class GameManager : MonoBehaviour
     public void UpdateState()
     {
         startWord = submittedWords.Last();
-        chosenLetters.Clear();
-        chosenLetters = new List<char> {'a', 'e'};
-        // chosenLetters = wordCheck.GetChosenVowels(2, startWord);
+        List<char> prevLetters = new List<char>(chosenLetters);
+        while (true)
+        {
+            chosenLetters.Clear();
+            chosenLetters = wordCheck.GetChosenVowels(2, startWord);
+            if (!chosenLetters.Equals(prevLetters))
+                break;
+        }
         startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);
         Debug.Log($"CHOSEN LETTERS: {string.Join(" ", chosenLetters).ToUpper()}");
         UpdateStartWord(startWord.ToUpper());

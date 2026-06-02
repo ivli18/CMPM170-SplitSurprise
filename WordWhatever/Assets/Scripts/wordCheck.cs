@@ -6,6 +6,7 @@ public class WordCheck : MonoBehaviour
 {
     [Header("[== REFERENCES ==]")]
     [SerializeField] private TextAsset vocabularyList;
+    [SerializeField] private GameManager gameManager;
 
     private HashSet<string> validWords = new HashSet<string>();
 
@@ -34,7 +35,7 @@ public class WordCheck : MonoBehaviour
         foreach (char c in word.ToLower())
         {
             /*Debug.Log($"{c} == {letters[letterIndex]}: {c == letterIndex}");*/
-            if (c == letters[letterIndex])
+            if (c == char.ToLower(letters[letterIndex]))
             {
                 letterIndex++;
                 if (letterIndex == letters.Count) return true;
@@ -109,29 +110,34 @@ public class WordCheck : MonoBehaviour
     }
     */
 
-    public List<char> GetChosenVowels(int vowelCount, string word)
+    public List<char> GetInitChosenVowels(int vowelCount, string word)
     {
-        List<char> vowels = new List<char> {
-            'a', 'e', 'i', 'o', 'u'
-        };
-        List<int> possibleInd = new List<int>();
+        List<char> possibleVowels = new List<char>();
         while (true)
         {
-            possibleInd.Clear();
-            while (possibleInd.Count < vowelCount)
-            {
-                int index = Random.Range(0, word.Length);
-                if (!possibleInd.Contains(index) && vowels.Contains(char.ToLower(word[index])))
-                    possibleInd.Add(index);
-            }
-            // place in ascending index order
-            possibleInd.Sort();
-            List<char> possibleLetters = possibleInd
-                .Select(i => word[i])
-                .ToList();
-            if (IsPossible(possibleLetters))
-                return possibleLetters;
+            possibleVowels.Clear();
+            possibleVowels = GetChosenVowels(vowelCount, word);
+            if (IsPossible(possibleVowels))
+                return possibleVowels;
         }
+    }
+
+    public List<char> GetChosenVowels(int vowelCount, string word)
+    {
+        string vowels = "aeiou";
+        List<int> possibleInd = new List<int>();
+        while (possibleInd.Count < vowelCount)
+        {
+            int index = Random.Range(0, word.Length);
+            if (!possibleInd.Contains(index) && vowels.Contains(char.ToLower(word[index])))
+                possibleInd.Add(index);
+        }
+        // place in ascending index order
+        possibleInd.Sort();
+        List<char> possibleLetters = possibleInd
+            .Select(i => word[i])
+            .ToList();
+        return possibleLetters;
     }
 
     public bool IsValidWord(string guess)
@@ -145,7 +151,8 @@ public class WordCheck : MonoBehaviour
         {
             if (letterIndex < letters.Count && char.ToLower(c) == char.ToLower(letters[letterIndex]))
             {
-                result += $"<color=yellow>{c}</color>";
+                string hexText = ColorUtility.ToHtmlStringRGB(gameManager.HighlightColor);
+                result += $"<color=#{hexText}>{c}</color>";
                 letterIndex++;
             }
             else

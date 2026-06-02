@@ -425,6 +425,7 @@ MonoBehaviour:
   wordCheck: {fileID: 1960189386}
   startingWord: {fileID: 800306015}
   endingWord: {fileID: 1717215200}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   originalColor: {r: 1, g: 1, b: 1, a: 1}
   incorrectColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &333443556
@@ -1469,6 +1470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WordCheck
   vocabularyList: {fileID: 4900000, guid: fa3aede2e338d0047b75b9e31f400a90, type: 3}
+  gameManager: {fileID: 333443555}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
