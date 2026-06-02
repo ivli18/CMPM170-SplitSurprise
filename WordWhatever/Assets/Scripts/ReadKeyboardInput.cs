@@ -9,7 +9,7 @@ public class ReadKeyboardInput : MonoBehaviour
     [SerializeField] private ScoringSystem scoreSystem;
 
     [Header("[== TEXT OBJ REFERENCES ==]")]
-    [SerializeField] private TMP_Text canvasText;
+    [SerializeField] private TMP_Text guessText;
     [SerializeField] private TMP_Text previousWordText;
 
     [Header("[== SETTINGS ==]")]
@@ -23,7 +23,7 @@ public class ReadKeyboardInput : MonoBehaviour
     private void Awake()
     {
         inputActions = new InputActions();
-        canvasText.text = "";
+        guessText.text = "";
     }
 
     private void OnEnable()
@@ -32,7 +32,8 @@ public class ReadKeyboardInput : MonoBehaviour
         inputActions.Player.BackspaceKey.started += OnBackspaceStarted;
         inputActions.Player.BackspaceKey.canceled += OnBackspaceCancelled;
         inputActions.Player.EnterKey.performed += OnEnter;
-        if (Keyboard.current != null) Keyboard.current.onTextInput += OnTextInput;
+        if (Keyboard.current != null)
+            Keyboard.current.onTextInput += OnTextInput;
     }
 
     private void OnDisable()
@@ -41,7 +42,8 @@ public class ReadKeyboardInput : MonoBehaviour
         inputActions.Player.BackspaceKey.canceled -= OnBackspaceCancelled;
         inputActions.Player.EnterKey.performed -= OnEnter;
         inputActions.Disable();
-        if (Keyboard.current != null) Keyboard.current.onTextInput -= OnTextInput;
+        if (Keyboard.current != null)
+            Keyboard.current.onTextInput -= OnTextInput;
     }
 
     private void OnBackspaceStarted(InputAction.CallbackContext context)
@@ -52,7 +54,8 @@ public class ReadKeyboardInput : MonoBehaviour
         nextDeleteTime = Time.time + initialDelay;
     }
 
-    private void OnBackspaceCancelled(InputAction.CallbackContext context) => backspaceHeld = false;
+    private void OnBackspaceCancelled(InputAction.CallbackContext context)
+        => backspaceHeld = false;
 
     private void Update()
     {
@@ -66,7 +69,7 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void DeleteCharacter()
     {
-        if (canvasText.text.Length > 0) canvasText.text = canvasText.text[..^1];
+        if (guessText.text.Length > 0) guessText.text = guessText.text[..^1];
         AudioManager.Instance.PlaySFX(AudioManager.SFXType.DeleteSFX);
     }
 
@@ -74,21 +77,22 @@ public class ReadKeyboardInput : MonoBehaviour
     {
         if (c == '\b' || c == '\r' || c == '\n') return;
         if (!char.IsLetter(c)) return; // we don't care about spaces, only letters!
-        canvasText.text += char.ToUpper(c);
+        guessText.text += char.ToUpper(c);
         AudioManager.Instance.PlaySFX(AudioManager.SFXType.TypeSFX);    
     }
 
     private void OnEnter(InputAction.CallbackContext context)
     {
-        switch(scoreSystem.CalculateScore(canvasText.text))
+        switch(scoreSystem.CalculateScore(guessText.text))
         {
             case true:
-                previousWordText.text = canvasText.text;
-                canvasText.text = "";
+                previousWordText.text = guessText.text;
+                guessText.text = "";
+                gameManager.SubmittedWords.Add(guessText.text.ToUpper());
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.ValidSFX);
                 break;
             case false:
-                canvasText.color = Color.red;
+                guessText.color = Color.red;
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.InvalidSFX);
                 break;
         }

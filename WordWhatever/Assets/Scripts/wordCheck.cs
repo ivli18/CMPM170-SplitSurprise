@@ -8,7 +8,9 @@ public class WordCheck : MonoBehaviour
     [SerializeField] private TextAsset vocabularyList;
 
     private HashSet<string> validWords = new HashSet<string>();
-    private void Awake() => LoadDictionary();
+
+    private void Awake()
+        => LoadDictionary();
 
     private void LoadDictionary()
     {
@@ -31,7 +33,7 @@ public class WordCheck : MonoBehaviour
         int letterIndex = 0;
         foreach (char c in word.ToLower())
         {
-            Debug.Log($"{c} == {letters[letterIndex]}: {c == letterIndex}");
+            /*Debug.Log($"{c} == {letters[letterIndex]}: {c == letterIndex}");*/
             if (c == letters[letterIndex])
             {
                 letterIndex++;
@@ -40,6 +42,9 @@ public class WordCheck : MonoBehaviour
         }
         return false;
     }
+
+    public bool ContainsLetterAtPosition(int pos, char letter, string word)
+        => char.ToLower(letter) == char.ToLower(word[pos]);
 
     public List<string> GetWordsStartingWith(string prefix)
     {
@@ -84,7 +89,7 @@ public class WordCheck : MonoBehaviour
         // https://stackoverflow.com/questions/1450774/splitting-a-string-into-chunks-of-a-certain-size
         IEnumerable<string> splitWord
             = Enumerable.Range(0, letterCount)
-            .Select(i => word.Substring(i * letterCount, letterCount));
+                .Select(i => word.Substring(i * letterCount, letterCount));
         List<char> possibleLetters = new List<char>();
         while (true)
         {
@@ -98,5 +103,6 @@ public class WordCheck : MonoBehaviour
         }
     }
 
-    public bool IsValidWord(string guess) => validWords.Contains(guess.ToLower());
+    public bool IsValidWord(string guess)
+        => validWords.Contains(guess.ToLower());
 }

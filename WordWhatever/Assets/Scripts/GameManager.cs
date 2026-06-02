@@ -14,10 +14,12 @@ public class GameManager : MonoBehaviour
     private string startWord;
     private string endWord;
     private List<char> chosenLetters;
+    private List<string> submittedWords;
 
     public string StartWord => startWord;
     public string EndWord => endWord;
     public List<char> ChosenLetters => chosenLetters;
+    public List<string> SubmittedWords => submittedWords;
 
     void Start()
     {
@@ -42,8 +44,11 @@ public class GameManager : MonoBehaviour
         UpdateEndWord(endWord.ToUpper());
     }
 
-    public void UpdateStartWord(string newWord) => startingWord.text = newWord;
-    public void UpdateEndWord(string newWord) => endingWord.text = newWord;
+    public void UpdateStartWord(string newWord)
+        => startingWord.text = newWord;
+
+    public void UpdateEndWord(string newWord)
+        => endingWord.text = newWord;
 
     void Update()
     {
