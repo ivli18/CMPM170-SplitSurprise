@@ -43,8 +43,10 @@ public class WordCheck : MonoBehaviour
         return false;
     }
 
+    /*
     public bool ContainsLetterAtPosition(int pos, char letter, string word)
         => char.ToLower(letter) == char.ToLower(word[pos]);
+    */
 
     public List<string> GetWordsStartingWith(string prefix)
     {
@@ -81,8 +83,11 @@ public class WordCheck : MonoBehaviour
         return pool[Random.Range(0, pool.Count)];
     }
 
-    /*public int ChooseLetterNumber(string word) => defaultLetterCount + (word.Length / 4);*/
+    /*
+    public int ChooseLetterNumber(string word) => defaultLetterCount + (word.Length / 4);
+    */
 
+    /*
     public List<char> GetChosenLetters(int letterCount, string word)
     {
         // thank you to this stackoverflow post for the algorithm :)
@@ -102,8 +107,35 @@ public class WordCheck : MonoBehaviour
                 return new List<char>(possibleLetters);
         }
     }
+    */
 
-    public bool IsValidWord(string guess) => validWords.Contains(guess.ToLower());
+    public List<char> GetChosenVowels(int vowelCount, string word)
+    {
+        List<char> vowels = new List<char> {
+            'a', 'e', 'i', 'o', 'u'
+        };
+        List<int> possibleInd = new List<int>();
+        while (true)
+        {
+            possibleInd.Clear();
+            while (possibleInd.Count < vowelCount)
+            {
+                int index = Random.Range(0, word.Length);
+                if (!possibleInd.Contains(index) && vowels.Contains(char.ToLower(word[index])))
+                    possibleInd.Add(index);
+            }
+            // place in ascending index order
+            possibleInd.Sort();
+            List<char> possibleLetters = possibleInd
+                .Select(i => word[i])
+                .ToList();
+            if (IsPossible(possibleLetters))
+                return possibleLetters;
+        }
+    }
+
+    public bool IsValidWord(string guess)
+        => validWords.Contains(guess.ToLower());
 
     public string ReturnWithColor(string word, List<char> letters)
     {

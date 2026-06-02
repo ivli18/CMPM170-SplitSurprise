@@ -21,18 +21,17 @@ public class ScoringSystem : MonoBehaviour
     {
         bool exists = wordChecker.IsValidWord(text),
             inOrder = wordChecker.ContainsLettersInOrder(text, gameManager.ChosenLetters),
-            containsBeginningLetter = wordChecker.ContainsLetterAtPosition(score, text[0], gameManager.EndWord),
             isMinLength = text.Length >= minSubmitLength,
             notRepeated = !gameManager.SubmittedWords.Contains(text);
         bool validAnswer
-            = exists && inOrder && containsBeginningLetter && isMinLength && notRepeated;
+            = exists && inOrder && isMinLength && notRepeated;
         if (validAnswer)
         {
             score++;
             UpdateScoreText();
         }
         Debug.Log(
-            $"DOES IT PASS? EXISTS: {exists} ORDERED: {inOrder} CONTAINS BEGINNING: {containsBeginningLetter} MIN LENGTH: {isMinLength} NOT REPEATED: {notRepeated}"
+            $"DOES IT PASS? EXISTS: {exists} ORDERED: {inOrder} CONTAINS BEGINNING: MIN LENGTH: {isMinLength} NOT REPEATED: {notRepeated}"
         );
         return validAnswer;
     }

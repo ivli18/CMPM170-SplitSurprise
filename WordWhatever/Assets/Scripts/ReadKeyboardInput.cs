@@ -11,7 +11,6 @@ public class ReadKeyboardInput : MonoBehaviour
 
     [Header("[== TEXT OBJ REFERENCES ==]")]
     [SerializeField] private TMP_Text guessText;
-    [SerializeField] private TMP_Text previousWordText;
 
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;
@@ -20,7 +19,6 @@ public class ReadKeyboardInput : MonoBehaviour
     private InputActions inputActions;
     private bool backspaceHeld;
     private float nextDeleteTime;
-    private Color originalColor = Color.white;
 
     private void Awake()
     {
@@ -85,28 +83,29 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnEnter(InputAction.CallbackContext context)
     {
-        switch(scoreSystem.CalculateScore(guessText.text))
+        string guess = guessText.text;
+        switch(scoreSystem.CalculateScore(guess))
         {
             case true:
-                previousWordText.text = guessText.text;
                 guessText.text = "";
-                gameManager.SubmittedWords.Add(guessText.text.ToUpper());
+                gameManager.SubmittedWords.Add(guess.ToUpper());
+                gameManager.UpdateState();
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.ValidSFX);
                 break;
             case false:
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.InvalidSFX);
-                StartCoroutine(FlashRed2());
+                StartCoroutine(FlashRed());
                 break;
         }
     }
-    IEnumerator FlashRed2()
+    IEnumerator FlashRed()
     {
         guessText.color = Color.red;
         yield return new WaitForSeconds(0.15f);
-        guessText.color = originalColor;
+        guessText.color = gameManager.OriginalColor;
         yield return new WaitForSeconds(0.05f);
-        guessText.color = Color.red;
+        guessText.color = gameManager.IncorrectColor;
         yield return new WaitForSeconds(0.15f);
-        guessText.color = originalColor;
+        guessText.color = gameManager.OriginalColor;
     }
 }
