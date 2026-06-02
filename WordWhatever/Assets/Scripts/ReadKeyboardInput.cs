@@ -101,12 +101,12 @@ public class ReadKeyboardInput : MonoBehaviour
     }
     IEnumerator FlashRed2()
     {
-        canvasText.color = Color.red;
+        guessText.color = Color.red;
         yield return new WaitForSeconds(0.15f);
-        canvasText.color = originalColor;
+        guessText.color = originalColor;
         yield return new WaitForSeconds(0.05f);
-        canvasText.color = Color.red;
+        guessText.color = Color.red;
         yield return new WaitForSeconds(0.15f);
-        canvasText.color = originalColor;
+        guessText.color = originalColor;
     }
 }

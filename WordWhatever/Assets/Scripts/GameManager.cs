@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private string startWord;
     private string endWord;
     private List<char> chosenLetters;
-    private List<string> submittedWords;
+    private List<string> submittedWords = new List<string>();
 
     public string StartWord => startWord;
     public string EndWord => endWord;
