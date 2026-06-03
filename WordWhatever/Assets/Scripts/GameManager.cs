@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     private string startWord;
     private string endWord;
+    private char randEndLetter;
     private List<char> chosenLetters;
     private List<string> submittedWords = new List<string>();
 
@@ -44,8 +45,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // then, generate startWord
-        startWord = wordCheck.GetRandomWord();
+        // then, generate startWord using a random letter from endWord
+        startWord = wordCheck.GetRandomWordContainingLetter(randEndLetter);
+        randEndLetter = endWord[Random.Range(0, endWord.Length)];
         chosenLetters = wordCheck.GetInitChosenVowels(2, startWord);
         startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);
         Debug.Log($"CHOSEN LETTERS: {string.Join(" ", chosenLetters).ToUpper()}");
@@ -62,7 +64,9 @@ public class GameManager : MonoBehaviour
         {
             chosenLetters.Clear();
             chosenLetters = wordCheck.GetChosenVowels(2, startWord);
-            if (!chosenLetters.Equals(prevLetters))
+            randEndLetter = endWord[Random.Range(0, endWord.Length)];
+            chosenLetters.Add(randEndLetter);
+            if (!chosenLetters.Equals(prevLetters) && wordCheck.IsPossible(prevLetters))
                 break;
         }
         startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);

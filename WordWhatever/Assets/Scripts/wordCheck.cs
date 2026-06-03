@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 public class WordCheck : MonoBehaviour
 {
@@ -19,12 +20,27 @@ public class WordCheck : MonoBehaviour
         foreach (string line in lines) validWords.Add(line.Trim().ToLower());
     }
 
-    public bool IsPossible(List<char> letters)
+    public bool IsPossibleInit(List<char> letters)
     {
         foreach (string word in validWords)
         {
             if (word.Length < letters.Count) continue; // skip words that are smaller than possible letters
             if (ContainsLettersInOrder(word, letters)) return true;
+        }
+        return false;
+    }
+
+    public bool IsPossible(List<char> letters)
+    {
+        foreach (string word in validWords)
+        {
+            int letterCount = 0;
+            if (word.Length < letters.Count) continue; // skip words that are smaller than possible letters
+            foreach (char letter in letters)
+                if (word.Contains(char.ToLower(letter)))
+                    letterCount++;
+            if (letterCount == letters.Count)
+                return true;
         }
         return false;
     }
@@ -66,6 +82,18 @@ public class WordCheck : MonoBehaviour
         foreach (string word in validWords)
         {
             if (word.Length >= minLength)
+                pool.Add(word);
+        }
+        if (pool.Count == 0) { return null; }
+        return pool[Random.Range(0, pool.Count)];
+    }
+
+    public string GetRandomWordContainingLetter(char letter, int minLength = 4)
+    {
+        List<string> pool = new List<string>();
+        foreach (string word in validWords)
+        {
+            if (word.Length >= minLength && word.ToLower().Contains(char.ToLower(letter)))
                 pool.Add(word);
         }
         if (pool.Count == 0) { return null; }
@@ -119,7 +147,7 @@ public class WordCheck : MonoBehaviour
         {
             possibleVowels.Clear();
             possibleVowels = GetChosenVowels(vowelCount, word);
-            if (IsPossible(possibleVowels))
+            if (IsPossibleInit(possibleVowels))
                 return possibleVowels;
         }
     }
