@@ -1,13 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 
 public class WordCheck : MonoBehaviour
 {
     [Header("[== REFERENCES ==]")]
     [SerializeField] private TextAsset vocabularyList;
-    [SerializeField] private GameManager gameManager;
 
     private HashSet<string> validWords = new HashSet<string>();
 
@@ -16,8 +14,11 @@ public class WordCheck : MonoBehaviour
 
     private void LoadDictionary()
     {
-        string[] lines = vocabularyList.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
-        foreach (string line in lines) validWords.Add(line.Trim().ToLower());
+        string[] lines = vocabularyList.text.Split(
+            '\n', System.StringSplitOptions.RemoveEmptyEntries
+        );
+        foreach (string line in lines)
+            validWords.Add(line.Trim().ToLower());
     }
 
     public bool IsPossibleInit(List<char> letters)
@@ -76,6 +77,15 @@ public class WordCheck : MonoBehaviour
         return matches;
     }
 
+    public char GetRandomLetterExclusive(string word, List<char> letters)
+    {
+        List<char> possibleLetters = new List<char>();
+        foreach (char letter in word)
+            if (!letters.Contains(char.ToLower(letter)))
+                possibleLetters.Add(letter);
+        return possibleLetters[Random.Range(0, possibleLetters.Count)];
+    }
+
     public string GetRandomWord(int minLength = 4)
     {
         List<string> pool = new List<string>();
@@ -92,11 +102,9 @@ public class WordCheck : MonoBehaviour
     {
         List<string> pool = new List<string>();
         foreach (string word in validWords)
-        {
             if (word.Length >= minLength && word.ToLower().Contains(char.ToLower(letter)))
                 pool.Add(word);
-        }
-        if (pool.Count == 0) { return null; }
+        if (pool.Count == 0) return null;
         return pool[Random.Range(0, pool.Count)];
     }
 
@@ -173,7 +181,7 @@ public class WordCheck : MonoBehaviour
     public bool IsValidWord(string guess)
         => validWords.Contains(guess.ToLower());
 
-    public string ReturnWithColor(string word, List<char> letters)
+    public string ReturnWithColor(string word, List<char> letters, Color color)
     {
         string result = "";
         int letterIndex = 0;
@@ -181,9 +189,41 @@ public class WordCheck : MonoBehaviour
         {
             if (letterIndex < letters.Count && char.ToLower(c) == char.ToLower(letters[letterIndex]))
             {
-                string hexText = ColorUtility.ToHtmlStringRGB(gameManager.HighlightColor);
+                string hexText = ColorUtility.ToHtmlStringRGB(color);
                 result += $"<color=#{hexText}>{c}</color>";
                 letterIndex++;
+            }
+            else
+            {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    public string ReturnWithColorEnd(string word, List<char> originalLetters, Color highlightColor, Color completedColor)
+    {
+        string result = "";
+
+        // grab and remove last letter
+        List<char> letters = new List<char>(originalLetters);
+        char highlightLetter = letters.Last();
+        letters.RemoveAt(letters.Count - 1);
+        
+        foreach (char c in word)
+        {
+            string hexText;
+            Debug.Log($"{highlightLetter}...{string.Join(" ", letters)}");
+            if (letters.Contains(char.ToLower(c)))
+            {
+                hexText = ColorUtility.ToHtmlStringRGB(completedColor);
+                result += $"<color=#{hexText}>{c}</color>";
+                letters.Remove(char.ToLower(c));
+            }
+            else if (c == char.ToLower(highlightLetter))
+            {
+                hexText = ColorUtility.ToHtmlStringRGB(highlightColor);
+                result += $"<color=#{hexText}>{c}</color>";
             }
             else
             {

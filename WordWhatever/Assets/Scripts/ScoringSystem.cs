@@ -1,5 +1,4 @@
 using System.Linq;
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 
@@ -19,22 +18,23 @@ public class ScoringSystem : MonoBehaviour
 
     public bool CalculateScore(string text)
     {
-        bool exists = wordChecker.IsValidWord(text),
+        bool validAnswer,
+            exists = wordChecker.IsValidWord(text),
             inOrder = wordChecker.ContainsLettersInOrder(text, gameManager.ChosenLetters),
+            containsEndLetter = text.ToLower().Contains(gameManager.RandEndLetters.Last()),
             isMinLength = text.Length >= minSubmitLength,
             notRepeated = !gameManager.SubmittedWords.Contains(text);
-        bool validAnswer
-            = exists && inOrder && isMinLength && notRepeated;
-        if (validAnswer)
+        if (validAnswer = exists && inOrder && containsEndLetter && isMinLength && notRepeated)
         {
             score++;
             UpdateScoreText();
         }
         Debug.Log(
-            $"DOES IT PASS? EXISTS: {exists} ORDERED: {inOrder} MIN LENGTH: {isMinLength} NOT REPEATED: {notRepeated}"
+            $"DOES IT PASS? EXISTS: {exists} ORDERED: {inOrder} CONTAINS END LETTER: {containsEndLetter} MIN LENGTH: {isMinLength} NOT REPEATED: {notRepeated}"
         );
         return validAnswer;
     }
 
-    private void UpdateScoreText() => scoreText.text = $"SCORE: {score}";
+    private void UpdateScoreText()
+        => scoreText.text = $"SCORE: {score}";
 }

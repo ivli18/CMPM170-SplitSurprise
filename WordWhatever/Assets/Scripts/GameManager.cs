@@ -14,23 +14,29 @@ public class GameManager : MonoBehaviour
 
     [Header("[== SETTINGS ==]")]
     [SerializeField] private Color highlightColor = Color.yellow;
+    [SerializeField] private Color completedColor = Color.green;
     [SerializeField] private Color originalColor = Color.white;
     [SerializeField] private Color incorrectColor = Color.red;
 
+    // original words
     private string startWord;
     private string endWord;
-    private char randEndLetter;
+    // words with markup syntaxing
+    private string startWordMarkup;
+    private string endWordMarkup;
     private List<char> chosenLetters;
+    private List<char> randEndLetters = new List<char>();
     private List<string> submittedWords = new List<string>();
 
-    public Color HighlightColor => highlightColor;
     public Color OriginalColor => originalColor;
     public Color IncorrectColor => incorrectColor;
     public string StartWord => startWord;
     public string EndWord => endWord;
+    public List<char> RandEndLetters => randEndLetters;
     public List<char> ChosenLetters => chosenLetters;
     public List<string> SubmittedWords => submittedWords;
 
+    // has to be Start instead of Awake to prevent race conditions against WordCheck
     private void Start()
     {
         // start with generating endWord
@@ -46,32 +52,39 @@ public class GameManager : MonoBehaviour
         }
 
         // then, generate startWord using a random letter from endWord
-        randEndLetter = endWord[Random.Range(0, endWord.Length)];
-        startWord = wordCheck.GetRandomWordContainingLetter(randEndLetter);
+        randEndLetters.Add(char.ToLower(endWord[Random.Range(0, endWord.Length)]));
+        startWord = wordCheck.GetRandomWordContainingLetter(randEndLetters.Last());
         chosenLetters = wordCheck.GetInitChosenVowels(2, startWord);
-        startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);
+        startWordMarkup = wordCheck.ReturnWithColor(startWord, chosenLetters, highlightColor);
+        endWordMarkup = wordCheck.ReturnWithColor(endWord, randEndLetters, highlightColor);
         Debug.Log($"CHOSEN LETTERS: {string.Join(" ", chosenLetters).ToUpper()}");
+        Debug.Log($"CHOSEN END LETTER: {char.ToUpper(randEndLetters.Last())}");
 
-        UpdateStartWord(startWord.ToUpper());
-        UpdateEndWord(endWord.ToUpper());
+        UpdateStartWord(startWordMarkup.ToUpper());
+        UpdateEndWord(endWordMarkup.ToUpper());
     }
 
     public void UpdateState()
     {
         startWord = submittedWords.Last();
         List<char> prevLetters = new List<char>(chosenLetters);
+        char endLetter;
         while (true)
         {
             chosenLetters.Clear();
             chosenLetters = wordCheck.GetChosenVowels(2, startWord);
-            randEndLetter = endWord[Random.Range(0, endWord.Length)];
-            chosenLetters.Add(randEndLetter);
-            if (!chosenLetters.Equals(prevLetters) && wordCheck.IsPossible(prevLetters))
+            endLetter = wordCheck.GetRandomLetterExclusive(endWord, randEndLetters);
+            List<char> allLetters = new List<char>(chosenLetters) {endLetter};
+            if (!chosenLetters.Equals(prevLetters) && wordCheck.IsPossible(allLetters))
                 break;
         }
-        startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);
+        randEndLetters.Add(endLetter);
+        startWordMarkup = wordCheck.ReturnWithColor(startWord, chosenLetters, highlightColor);
+        endWordMarkup = wordCheck.ReturnWithColorEnd(endWord, randEndLetters, highlightColor, completedColor);
         Debug.Log($"CHOSEN LETTERS: {string.Join(" ", chosenLetters).ToUpper()}");
-        UpdateStartWord(startWord.ToUpper());
+        Debug.Log($"CHOSEN END LETTER: {char.ToUpper(randEndLetters.Last())}");
+        UpdateStartWord(startWordMarkup.ToUpper());
+        UpdateEndWord(endWordMarkup.ToUpper());
     }
 
     public void UpdateStartWord(string newWord)
