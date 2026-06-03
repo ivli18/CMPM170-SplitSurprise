@@ -72,6 +72,7 @@ public class WordCheck : MonoBehaviour
         return pool[Random.Range(0, pool.Count)];
     }
 
+    /*
     public string GetRandomWordStartingWith(string starting, int minLength = 4)
     {
         List<string> pool = new List<string>();
@@ -83,6 +84,7 @@ public class WordCheck : MonoBehaviour
         if (pool.Count == 0) return null;
         return pool[Random.Range(0, pool.Count)];
     }
+    */
 
     /*
     public int ChooseLetterNumber(string word) => defaultLetterCount + (word.Length / 4);

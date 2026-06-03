@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     public List<char> ChosenLetters => chosenLetters;
     public List<string> SubmittedWords => submittedWords;
 
-    void Start()
+    private void Start()
     {
         // start with generating endWord
         while (true)
