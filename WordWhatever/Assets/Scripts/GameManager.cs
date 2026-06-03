@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
             chosenLetters.Clear();
             chosenLetters = wordCheck.GetChosenVowels(2, startWord);
             randEndLetter = endWord[Random.Range(0, endWord.Length)];
-            chosenLetters.Add(randEndLetter);
+            // chosenLetters.Add(randEndLetter);
             if (!chosenLetters.Equals(prevLetters) && wordCheck.IsPossible(prevLetters))
                 break;
         }

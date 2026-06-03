@@ -32,7 +32,7 @@ public class ScoringSystem : MonoBehaviour
             UpdateScoreText();
         }
         Debug.Log(
-            $"DOES IT PASS? EXISTS: {exists} ORDERED: {inOrder} MIN LENGTH: {isMinLength} NOT REPEATED: {notRepeated}"
+            $"DOES IT PASS? EXISTS: {exists}\nORDERED: {inOrder}\n MIN LENGTH: {isMinLength}\n NOT REPEATED: {notRepeated}"
         );
         return validAnswer;
     }

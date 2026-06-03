@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 
 public class WordCheck : MonoBehaviour
 {
@@ -20,27 +19,12 @@ public class WordCheck : MonoBehaviour
         foreach (string line in lines) validWords.Add(line.Trim().ToLower());
     }
 
-    public bool IsPossibleInit(List<char> letters)
+    public bool IsPossible(List<char> letters)
     {
         foreach (string word in validWords)
         {
             if (word.Length < letters.Count) continue; // skip words that are smaller than possible letters
             if (ContainsLettersInOrder(word, letters)) return true;
-        }
-        return false;
-    }
-
-    public bool IsPossible(List<char> letters)
-    {
-        foreach (string word in validWords)
-        {
-            int letterCount = 0;
-            if (word.Length < letters.Count) continue; // skip words that are smaller than possible letters
-            foreach (char letter in letters)
-                if (word.Contains(char.ToLower(letter)))
-                    letterCount++;
-            if (letterCount == letters.Count)
-                return true;
         }
         return false;
     }
@@ -99,7 +83,6 @@ public class WordCheck : MonoBehaviour
         if (pool.Count == 0) { return null; }
         return pool[Random.Range(0, pool.Count)];
     }
-
     /*
     public string GetRandomWordStartingWith(string starting, int minLength = 4)
     {
@@ -147,7 +130,7 @@ public class WordCheck : MonoBehaviour
         {
             possibleVowels.Clear();
             possibleVowels = GetChosenVowels(vowelCount, word);
-            if (IsPossibleInit(possibleVowels))
+            if (IsPossible(possibleVowels))
                 return possibleVowels;
         }
     }
@@ -179,8 +162,8 @@ public class WordCheck : MonoBehaviour
                 remaining.Add(i);
             }
         }
-        int chosen = remaining[Random.Range(0, remaining.Count)];
         if (remaining.Count == 0) return -1;
+        int chosen = remaining[Random.Range(0, remaining.Count)];
         return chosen;
     }
 
