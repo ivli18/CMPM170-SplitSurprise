@@ -169,6 +169,20 @@ public class WordCheck : MonoBehaviour
             .ToList();
         return possibleLetters;
     }
+    public int GetEndRandomLetter(string word, List<int> completedIndexes)
+    {
+        List<int> remaining = new List<int>();
+        for (int i = 0; i < word.Length; i++)
+        {
+            if (!completedIndexes.Contains(i))
+            {
+                remaining.Add(i);
+            }
+        }
+        int chosen = remaining[Random.Range(0, remaining.Count)];
+        if (remaining.Count == 0) return -1;
+        return chosen;
+    }
 
     public bool IsValidWord(string guess)
         => validWords.Contains(guess.ToLower());
@@ -188,6 +202,26 @@ public class WordCheck : MonoBehaviour
             else
             {
                 result += c;
+            }
+        }
+        return result;
+    }
+    public string ReturnEndWithColor(string word, List<int> completedIndexes, int currentIndex)
+    {
+        string result = "";
+        for (int i = 0; i < word.Length; i++)
+        {
+            if (completedIndexes.Contains(i))
+            {
+                string hex = ColorUtility.ToHtmlStringRGB(gameManager.CompleteColor);
+                result += $"<color=#{hex}>{word[i]}</color>";
+            }else if (i == currentIndex)
+            {
+                string hex = ColorUtility.ToHtmlStringRGB(gameManager.HighlightColor);
+                result += $"<color=#{hex}>{word[i]}</color>";
+            } else
+            {
+                result += word[i];
             }
         }
         return result;

@@ -11,7 +11,8 @@ public class ScoringSystem : MonoBehaviour
     [SerializeField] private WordCheck wordChecker;
 
     [Header("[== SETTINGS ==]")]
-    [SerializeField] private int minSubmitLength = 5;
+    // setting to 4 for testing purposes
+    [SerializeField] private int minSubmitLength = 4;
 
     private int score = 0;
 

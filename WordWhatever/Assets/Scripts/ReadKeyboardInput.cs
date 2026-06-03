@@ -88,11 +88,16 @@ public class ReadKeyboardInput : MonoBehaviour
         switch(scoreSystem.CalculateScore(guess))
         {
             case true:
+                AudioManager.Instance.PlaySFX(AudioManager.SFXType.ValidSFX);
                 guessText.text = "";
                 gameManager.SubmittedWords.Add(guess.ToUpper());
                 gameManager.UpdateState();
-                AudioManager.Instance.PlaySFX(AudioManager.SFXType.ValidSFX);
                 timerSystem.AddTime(5f);
+                // Checks if selected end letter is in word
+                if (guess.ToUpper().Contains(char.ToUpper(gameManager.EndWord[gameManager.EndLetterIndex])))
+                {
+                    gameManager.CompleteEndLetter(gameManager.EndLetterIndex);
+                }
                 break;
             case false:
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.InvalidSFX);
