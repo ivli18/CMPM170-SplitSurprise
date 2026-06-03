@@ -15,6 +15,7 @@ public class ReadKeyboardInput : MonoBehaviour
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;
     [SerializeField] private float repeatDelay = 0.025f;
+    [SerializeField] private TimerSystem timerSystem;   
 
     private InputActions inputActions;
     private bool backspaceHeld;
@@ -91,14 +92,15 @@ public class ReadKeyboardInput : MonoBehaviour
                 gameManager.SubmittedWords.Add(guess.ToUpper());
                 gameManager.UpdateState();
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.ValidSFX);
+                timerSystem.AddTime(5f);
                 break;
             case false:
                 AudioManager.Instance.PlaySFX(AudioManager.SFXType.InvalidSFX);
-                StartCoroutine(FlashRed());
+                StartCoroutine(Invalid());
                 break;
         }
     }
-    IEnumerator FlashRed()
+    IEnumerator Invalid()
     {
         guessText.color = Color.red;
         yield return new WaitForSeconds(0.15f);
@@ -107,5 +109,6 @@ public class ReadKeyboardInput : MonoBehaviour
         guessText.color = gameManager.IncorrectColor;
         yield return new WaitForSeconds(0.15f);
         guessText.color = gameManager.OriginalColor;
+        guessText.text = "";
     }
 }

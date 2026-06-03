@@ -48,4 +48,8 @@ public class TimerSystem : MonoBehaviour
         int seconds = Mathf.FloorToInt(remaining % 60f);
         return $"{minutes:00}:{seconds:00}";
     }
+    public void AddTime(float addTime)
+    {
+        elapsed = Mathf.Max(0f, elapsed - addTime);
+    }
 }

@@ -1714,6 +1714,7 @@ MonoBehaviour:
   guessText: {fileID: 448575863}
   initialDelay: 0.4
   repeatDelay: 0.05
+  timerSystem: {fileID: 2078228636}
 --- !u!4 &1960189383
 Transform:
   m_ObjectHideFlags: 0

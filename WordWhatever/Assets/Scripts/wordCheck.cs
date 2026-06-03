@@ -48,16 +48,16 @@ public class WordCheck : MonoBehaviour
     public bool ContainsLettersInOrder(string word, List<char> letters)
     {
         int letterIndex = 0;
-        foreach (char c in word.ToLower())
+        foreach (char c in letters)
         {
             /*Debug.Log($"{c} == {letters[letterIndex]}: {c == letterIndex}");*/
-            if (c == char.ToLower(letters[letterIndex]))
-            {
-                letterIndex++;
-                if (letterIndex == letters.Count) return true;
+            int found = word.ToLower().IndexOf(char.ToLower(c), letterIndex);
+            if (found == -1) {
+                return false;
             }
+            letterIndex = found + 1;
         }
-        return false;
+        return true;
     }
 
     /*

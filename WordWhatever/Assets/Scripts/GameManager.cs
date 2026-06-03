@@ -46,8 +46,8 @@ public class GameManager : MonoBehaviour
         }
 
         // then, generate startWord using a random letter from endWord
-        startWord = wordCheck.GetRandomWordContainingLetter(randEndLetter);
         randEndLetter = endWord[Random.Range(0, endWord.Length)];
+        startWord = wordCheck.GetRandomWordContainingLetter(randEndLetter);
         chosenLetters = wordCheck.GetInitChosenVowels(2, startWord);
         startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);
         Debug.Log($"CHOSEN LETTERS: {string.Join(" ", chosenLetters).ToUpper()}");
