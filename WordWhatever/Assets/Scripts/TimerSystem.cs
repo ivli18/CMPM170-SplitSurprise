@@ -14,9 +14,8 @@ public class TimerSystem : MonoBehaviour
     [SerializeField] private float totalTime = 30f;
 
     private float elapsed = 0f;
-    private bool running = true;
+    public bool running = true;
 
-    public bool Running => running;
 
     private void Start()
     {

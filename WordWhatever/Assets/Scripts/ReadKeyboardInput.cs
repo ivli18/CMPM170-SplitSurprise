@@ -49,6 +49,9 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnBackspaceStarted(InputAction.CallbackContext context)
     {
+        // stop while paused
+        if (timerSystem.running) return;
+
         backspaceHeld = true;
         // delete a character immediately
         DeleteCharacter();
@@ -76,6 +79,9 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnTextInput(char c)
     {
+        // stop while paused
+        if (timerSystem.running) return;
+
         if (c == '\b' || c == '\r' || c == '\n') return;
         if (!char.IsLetter(c)) return; // we don't care about spaces, only letters!
         guessText.text += char.ToUpper(c);
@@ -84,6 +90,9 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnEnter(InputAction.CallbackContext context)
     {
+        // stop while paused
+        if (timerSystem.running) return;
+
         string guess = guessText.text;
         switch(scoreSystem.CalculateScore(guess))
         {
