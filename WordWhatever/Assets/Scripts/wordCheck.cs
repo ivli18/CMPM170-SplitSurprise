@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class WordCheck : MonoBehaviour
 {
@@ -77,13 +78,16 @@ public class WordCheck : MonoBehaviour
         return matches;
     }
 
-    public char GetRandomLetterExclusive(string word, List<char> letters)
+    public GameManager.EndLetter GetRandomLetterExclusive(string word, List<GameManager.EndLetter> endLetters)
     {
-        List<char> possibleLetters = new List<char>();
-        foreach (char letter in word)
-            if (!letters.Contains(char.ToLower(letter)))
-                possibleLetters.Add(letter);
-        return possibleLetters[Random.Range(0, possibleLetters.Count)];
+        List<GameManager.EndLetter> possibleLetters = new List<GameManager.EndLetter>();
+        for (int i = 0; i < word.Length; i++)
+        {
+            char letter = word[i];
+            if (!GameManager.EndLetter.ToCharList(endLetters).Contains(char.ToLower(letter)) && !GameManager.EndLetter.ToIndexList(endLetters).Contains(i))
+                possibleLetters.Add(new GameManager.EndLetter { letter = word[i], index = i });
+        }
+        return possibleLetters[UnityEngine.Random.Range(0, possibleLetters.Count)];
     }
 
     public string GetRandomWord(int minLength = 4)
@@ -95,7 +99,7 @@ public class WordCheck : MonoBehaviour
                 pool.Add(word);
         }
         if (pool.Count == 0) { return null; }
-        return pool[Random.Range(0, pool.Count)];
+        return pool[UnityEngine.Random.Range(0, pool.Count)];
     }
 
     public string GetRandomWordContainingLetter(char letter, int minLength = 4)
@@ -105,7 +109,7 @@ public class WordCheck : MonoBehaviour
             if (word.Length >= minLength && word.ToLower().Contains(char.ToLower(letter)))
                 pool.Add(word);
         if (pool.Count == 0) return null;
-        return pool[Random.Range(0, pool.Count)];
+        return pool[UnityEngine.Random.Range(0, pool.Count)];
     }
 
     /*
@@ -166,7 +170,7 @@ public class WordCheck : MonoBehaviour
         List<int> possibleInd = new List<int>();
         while (possibleInd.Count < vowelCount)
         {
-            int index = Random.Range(0, word.Length);
+            int index = UnityEngine.Random.Range(0, word.Length);
             if (!possibleInd.Contains(index) && vowels.Contains(char.ToLower(word[index])))
                 possibleInd.Add(index);
         }
@@ -201,26 +205,31 @@ public class WordCheck : MonoBehaviour
         return result;
     }
 
-    public string ReturnWithColorEnd(string word, List<char> originalLetters, Color highlightColor, Color completedColor)
+    public string ReturnWithColorEnd(string word, List<GameManager.EndLetter> originalLetters, Color highlightColor, Color completedColor)
     {
         string result = "";
 
-        // grab and remove last letter
-        List<char> letters = new List<char>(originalLetters);
-        char highlightLetter = letters.Last();
+        // grab highlight letter and index
+        List<GameManager.EndLetter> letters
+            = new List<GameManager.EndLetter>(originalLetters);
+        GameManager.EndLetter endLetter;
+        endLetter = letters.Last();
         letters.RemoveAt(letters.Count - 1);
         
-        foreach (char c in word)
+        for (int i = 0; i < word.Length; i++)
         {
             string hexText;
-            Debug.Log($"{highlightLetter}...{string.Join(" ", letters)}");
-            if (letters.Contains(char.ToLower(c)))
+            char c = char.ToLower(word[i]);
+            Debug.Log($"{endLetter}...{string.Join(" ", letters)}");
+            if (
+                (GameManager.EndLetter.ToCharList(letters).Contains(c) && GameManager.EndLetter.ToIndexList(letters).Contains(i))
+                || (letters.Count == 0 && c == char.ToLower(endLetter.letter) && i == endLetter.index)
+            )
             {
                 hexText = ColorUtility.ToHtmlStringRGB(completedColor);
                 result += $"<color=#{hexText}>{c}</color>";
-                letters.Remove(char.ToLower(c));
             }
-            else if (c == char.ToLower(highlightLetter))
+            else if (c == char.ToLower(endLetter.letter) && i == endLetter.index)
             {
                 hexText = ColorUtility.ToHtmlStringRGB(highlightColor);
                 result += $"<color=#{hexText}>{c}</color>";

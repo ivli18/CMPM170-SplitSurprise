@@ -8,6 +8,7 @@ public class ReadKeyboardInput : MonoBehaviour
     [Header("[== SYSTEM REFERENCES ==]")]
     [SerializeField] private GameManager gameManager;
     [SerializeField] private ScoringSystem scoreSystem;
+    [SerializeField] private TimerSystem timerSystem;   
 
     [Header("[== TEXT OBJ REFERENCES ==]")]
     [SerializeField] private TMP_Text guessText;
@@ -15,7 +16,6 @@ public class ReadKeyboardInput : MonoBehaviour
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;
     [SerializeField] private float repeatDelay = 0.025f;
-    [SerializeField] private TimerSystem timerSystem;   
 
     private InputActions inputActions;
     private bool backspaceHeld;
@@ -55,11 +55,20 @@ public class ReadKeyboardInput : MonoBehaviour
         nextDeleteTime = Time.time + initialDelay;
     }
 
+    private void DeleteCharacter()
+    {
+        if (!timerSystem.Running) return;
+        if (guessText.text.Length > 0)
+            guessText.text = guessText.text[..^1];
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.DeleteSFX);
+    }
+
     private void OnBackspaceCancelled(InputAction.CallbackContext context)
         => backspaceHeld = false;
 
     private void Update()
     {
+        if (!timerSystem.Running) return;
         if (!backspaceHeld) return;
         if (Time.time >= nextDeleteTime)
         {
@@ -68,14 +77,9 @@ public class ReadKeyboardInput : MonoBehaviour
         }
     }
 
-    private void DeleteCharacter()
-    {
-        if (guessText.text.Length > 0) guessText.text = guessText.text[..^1];
-        AudioManager.Instance.PlaySFX(AudioManager.SFXType.DeleteSFX);
-    }
-
     private void OnTextInput(char c)
     {
+        if (!timerSystem.Running) return;
         if (c == '\b' || c == '\r' || c == '\n') return;
         if (!char.IsLetter(c)) return; // we don't care about spaces, only letters!
         guessText.text += char.ToUpper(c);
@@ -84,6 +88,7 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnEnter(InputAction.CallbackContext context)
     {
+        if (!timerSystem.Running) return;
         string guess = guessText.text;
         switch(scoreSystem.CalculateScore(guess))
         {
@@ -100,9 +105,10 @@ public class ReadKeyboardInput : MonoBehaviour
                 break;
         }
     }
+
     IEnumerator Invalid()
     {
-        guessText.color = Color.red;
+        guessText.color = gameManager.IncorrectColor;
         yield return new WaitForSeconds(0.15f);
         guessText.color = gameManager.OriginalColor;
         yield return new WaitForSeconds(0.05f);

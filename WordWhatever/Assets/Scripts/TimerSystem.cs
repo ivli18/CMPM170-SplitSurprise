@@ -11,6 +11,8 @@ public class TimerSystem : MonoBehaviour
     [SerializeField] private Image timerImageRight;
 
     [Header("[== SETTINGS ==]")]
+    [SerializeField] private Color startColor = Color.white;
+    [SerializeField] private Color endColor = Color.red;
     [SerializeField] private float totalTime = 30f;
 
     private float elapsed = 0f;
@@ -39,6 +41,45 @@ public class TimerSystem : MonoBehaviour
         float timerProgress = 1 - Mathf.Clamp01(elapsed / totalTime);
         timerImageLeft.fillAmount = timerImageRight.fillAmount = timerProgress;
         timerText.text = GetFormattedTime();
+
+        // convert rgb (red, green, blue) values
+        // into hsv (hue, saturation, value) values
+        Color.RGBToHSV(
+            startColor,
+            out float startHue,
+            out float startSaturation,
+            out float startLight
+        );
+        Color.RGBToHSV(
+            endColor,
+            out float endHue,
+            out float endSaturation,
+            out float endLight
+        );
+
+        // calculate new lerp values
+        float
+            hue = Mathf.LerpAngle(
+                endHue,
+                startHue,
+                timerProgress
+            ),
+            saturation = Mathf.Lerp(
+                endSaturation,
+                startSaturation,
+                timerProgress
+            ),
+            light = Mathf.Lerp(
+                endLight,
+                startLight,
+                timerProgress
+            );
+            
+        timerImageLeft.color = timerImageRight.color = timerText.color = Color.HSVToRGB(
+            hue,
+            saturation,
+            light
+        );
     }
 
     public string GetFormattedTime()
@@ -49,7 +90,5 @@ public class TimerSystem : MonoBehaviour
         return $"{minutes:00}:{seconds:00}";
     }
     public void AddTime(float addTime)
-    {
-        elapsed = Mathf.Max(0f, elapsed - addTime);
-    }
+        => elapsed = Mathf.Max(0f, elapsed - addTime);
 }
