@@ -2,11 +2,13 @@ using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class TimerSystem : MonoBehaviour
 {
     [Header("[== REFERENCES ==]")]
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text popupText;
     [SerializeField] private Image timerImageLeft;
     [SerializeField] private Image timerImageRight;
 
@@ -14,8 +16,10 @@ public class TimerSystem : MonoBehaviour
     [SerializeField] private float totalTime = 30f;
 
     private float elapsed = 0f;
-    public bool running = true;
+    private bool running = true;
+    public bool paused = false;
 
+    public bool Running => running;
 
     private void Start()
     {
@@ -25,12 +29,14 @@ public class TimerSystem : MonoBehaviour
 
     private void Update()
     {
-        if (!running) return;
+        if (!running || paused) return;
         
         UpdateUI();
         elapsed += Time.deltaTime;
         if (elapsed >= totalTime)
+        {
             running = false;
+        }
     }
 
     private void UpdateUI()
@@ -50,5 +56,21 @@ public class TimerSystem : MonoBehaviour
     public void AddTime(float addTime)
     {
         elapsed = Mathf.Max(0f, elapsed - addTime);
+        StartCoroutine(PopupTime(addTime));
+    }
+    IEnumerator PopupTime(float amount)
+    {
+        popupText.fontSize = 36 + amount;
+        popupText.text = $"+ <color=green>{amount}s</color>";
+        popupText.alpha = 1f;
+        yield return new WaitForSeconds(0.5f);
+        float t = 0f;
+        while (t < 0.3f)
+        {
+            t += Time.deltaTime;
+            popupText.alpha = 1f - (t / 0.3f);
+            yield return null;
+        }
+        popupText.alpha = 0f;
     }
 }

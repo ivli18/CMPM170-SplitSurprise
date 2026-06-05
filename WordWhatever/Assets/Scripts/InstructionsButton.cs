@@ -6,12 +6,12 @@ public class InstructionsButton : MonoBehaviour
     [SerializeField] private TimerSystem timerSystem;
     public void ShowPanel()
     {
-        timerSystem.running = false;
+        timerSystem.paused = false;
         panel.SetActive(true);
     }
     public void HidePanel()
     {
         panel.SetActive(false);
-        timerSystem.running = true;
+        timerSystem.paused = true;
     }
 }

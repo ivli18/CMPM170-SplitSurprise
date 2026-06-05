@@ -49,8 +49,7 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnBackspaceStarted(InputAction.CallbackContext context)
     {
-        // stop while paused
-        if (timerSystem.running) return;
+        if (timerSystem.paused) return;
 
         backspaceHeld = true;
         // delete a character immediately
@@ -79,8 +78,7 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnTextInput(char c)
     {
-        // stop while paused
-        if (timerSystem.running) return;
+        if (timerSystem.paused) return;
 
         if (c == '\b' || c == '\r' || c == '\n') return;
         if (!char.IsLetter(c)) return; // we don't care about spaces, only letters!
@@ -90,8 +88,7 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void OnEnter(InputAction.CallbackContext context)
     {
-        // stop while paused
-        if (timerSystem.running) return;
+        if (timerSystem.paused) return;
 
         string guess = guessText.text;
         switch(scoreSystem.CalculateScore(guess))
