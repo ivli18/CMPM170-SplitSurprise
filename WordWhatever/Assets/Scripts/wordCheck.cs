@@ -60,24 +60,26 @@ public class WordCheck : MonoBehaviour
         return matches;
     }
 
-    public string GetRandomWord(int minLength = 4)
+    public string GetRandomWord(int minLength = 4, int minVowels = 2)
     {
+        string vowels = "aeiou";
         List<string> pool = new List<string>();
         foreach (string word in validWords)
         {
-            if (word.Length >= minLength)
+            if (word.Length >= minLength && word.Count(c => vowels.Contains(char.ToLower(c))) >= minVowels)
                 pool.Add(word);
         }
         if (pool.Count == 0) { return null; }
         return pool[Random.Range(0, pool.Count)];
     }
 
-    public string GetRandomWordContainingLetter(char letter, int minLength = 4)
+    public string GetRandomWordContainingLetter(char letter, int minLength = 4, int minVowels = 2)
     {
+        string vowels = "aeiou";
         List<string> pool = new List<string>();
         foreach (string word in validWords)
         {
-            if (word.Length >= minLength && word.ToLower().Contains(char.ToLower(letter)))
+            if (word.Length >= minLength && word.Count(c => vowels.Contains(char.ToLower(c))) >= minVowels && word.ToLower().Contains(char.ToLower(letter)))
                 pool.Add(word);
         }
         if (pool.Count == 0) { return null; }

@@ -8,6 +8,7 @@ public class ReadKeyboardInput : MonoBehaviour
     [Header("[== SYSTEM REFERENCES ==]")]
     [SerializeField] private GameManager gameManager;
     [SerializeField] private ScoringSystem scoreSystem;
+    [SerializeField] private TimerSystem timerSystem;   
 
     [Header("[== TEXT OBJ REFERENCES ==]")]
     [SerializeField] private TMP_Text guessText;
@@ -15,7 +16,7 @@ public class ReadKeyboardInput : MonoBehaviour
     [Header("[== SETTINGS ==]")]
     [SerializeField] private float initialDelay = 0.5f;
     [SerializeField] private float repeatDelay = 0.025f;
-    [SerializeField] private TimerSystem timerSystem;   
+
 
     private InputActions inputActions;
     private bool backspaceHeld;
