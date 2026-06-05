@@ -44,10 +44,12 @@ public class AudioManager : MonoBehaviour
     [Header("Fade Transition")]
     public float fadeDuration = 3f;
 
+    private float masterVolume = 1f;
     private Dictionary<MusicType, MusicSound> musicSoundDict = new();
     private Dictionary<SFXType, SFXSound> sfxSoundDict = new();
     private AudioSource musicSource;
     private AudioSource sfxSource;
+    
 
     void Awake()
     {
@@ -77,7 +79,7 @@ public class AudioManager : MonoBehaviour
     {
         if (!musicSoundDict.TryGetValue(type, out MusicSound s)) return;
         musicSource.clip = s.clip;
-        musicSource.volume = volumeOverride >= 0 ? volumeOverride : s.volume;
+        musicSource.volume = (volumeOverride >= 0 ? volumeOverride : s.volume) * masterVolume;
         musicSource.loop = s.loop;    // Loops by default, can be overridden when playing
         musicSource.Play();
     }
@@ -90,7 +92,12 @@ public class AudioManager : MonoBehaviour
             return;
         }
         AudioClip clip = s.clips[Random.Range(0, s.clips.Length)];
-        sfxSource.PlayOneShot(clip, volumeOverride >= 0 ? volumeOverride : s.volume);
+        sfxSource.PlayOneShot(clip, (volumeOverride >= 0 ? volumeOverride : s.volume) * masterVolume);
+    }
+    public void SetMasterVolume(float vol)
+    {
+        masterVolume = vol;
+        AudioListener.volume = vol;
     }
     public void FadeToMusic(MusicType type)
     {

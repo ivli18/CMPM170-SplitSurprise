@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ReadKeyboardInput : MonoBehaviour
 {
@@ -63,6 +64,7 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void Update()
     {
+        if (!timerSystem.Running) SceneManager.LoadScene("LossScene");
         if (!backspaceHeld) return;
         if (Time.time >= nextDeleteTime)
         {

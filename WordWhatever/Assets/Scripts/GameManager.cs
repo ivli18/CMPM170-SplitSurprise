@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour
         UpdateStartWord(startWord);
         UpdateEndWord();
     }
-
     public void UpdateState()
     {
         startWord = submittedWords.Last();
