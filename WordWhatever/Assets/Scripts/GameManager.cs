@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [Header("[== REFERENCES ==]")]
     [SerializeField] private WordCheck wordCheck;
+    [SerializeField] private TimerSystem timerSystem;
+    [SerializeField] private ScoringSystem scoreSystem;
     
     [Header("[== TEXT OBJ REFERENCES ==]")]
     [SerializeField] private TMP_Text startingWord;
@@ -44,16 +46,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // start with generating endWord
-        while (true)
-        {
-            endWord = wordCheck.GetRandomWord();
-            List<string> matches = wordCheck.GetWordsStartingWith(endWord);
-            if (matches.Count >= 5)
-            {
-                Debug.Log($"WORDS FOR {endWord}: {string.Join(", ", matches)}");
-                break;
-            }
-        }
+        endWord = wordCheck.GetRandomWord();
         completedLettersIndex = new List<int>();
         endLetterIndex = wordCheck.GetEndRandomLetter(endWord, completedLettersIndex);
 
@@ -104,14 +97,11 @@ public class GameManager : MonoBehaviour
         startWord = endWord;
         chosenLetters = wordCheck.GetInitChosenVowels(2, startWord);
         startWord = wordCheck.ReturnWithColor(startWord, chosenLetters);
+        timerSystem.AddTime(20f);
+        scoreSystem.AddEndWordBonus(endWord.Length);
         UpdateStartWord(startWord);
 
-        while (true)
-        {
-            endWord = wordCheck.GetRandomWord();
-            List<string> matches = wordCheck.GetWordsStartingWith(endWord);
-            if (matches.Count >= 5) break;
-        }
+        endWord = wordCheck.GetRandomWord();
         completedLettersIndex = new List<int>();
         endLetterIndex = wordCheck.GetEndRandomLetter(endWord, completedLettersIndex);
         AudioManager.Instance.PlaySFX(AudioManager.SFXType.SuccessSFX);

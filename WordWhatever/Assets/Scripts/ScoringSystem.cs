@@ -1,5 +1,4 @@
 using System.Linq;
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +14,7 @@ public class ScoringSystem : MonoBehaviour
     [SerializeField] private int minSubmitLength = 4;
 
     private int score = 0;
+    public static int FinalScore;
 
     public int Score => score;
 
@@ -28,13 +28,18 @@ public class ScoringSystem : MonoBehaviour
             = exists && inOrder && isMinLength && notRepeated;
         if (validAnswer)
         {
-            score++;
+            score += 100;
             UpdateScoreText();
         }
         Debug.Log(
             $"DOES IT PASS? EXISTS: {exists}\nORDERED: {inOrder}\n MIN LENGTH: {isMinLength}\n NOT REPEATED: {notRepeated}"
         );
         return validAnswer;
+    }
+    public void AddEndWordBonus(int wordLength)
+    {
+        score += wordLength * 50;
+        UpdateScoreText();
     }
 
     private void UpdateScoreText() => scoreText.text = $"SCORE: {score}";

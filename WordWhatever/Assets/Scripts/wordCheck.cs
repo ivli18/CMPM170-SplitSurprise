@@ -5,18 +5,13 @@ using System.Linq;
 public class WordCheck : MonoBehaviour
 {
     [Header("[== REFERENCES ==]")]
-    [SerializeField] private TextAsset vocabularyList;
     [SerializeField] private GameManager gameManager;
 
     private HashSet<string> validWords = new HashSet<string>();
 
     private void Awake()
-        => LoadDictionary();
-
-    private void LoadDictionary()
     {
-        string[] lines = vocabularyList.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
-        foreach (string line in lines) validWords.Add(line.Trim().ToLower());
+        validWords = DictionaryManager.Instance.ValidWords;
     }
 
     public bool IsPossible(List<char> letters)

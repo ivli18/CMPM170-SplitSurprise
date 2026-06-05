@@ -64,7 +64,11 @@ public class ReadKeyboardInput : MonoBehaviour
 
     private void Update()
     {
-        if (!timerSystem.Running) SceneManager.LoadScene("LossScene");
+        if (!timerSystem.Running)
+        {
+            ScoringSystem.FinalScore = scoreSystem.Score;
+            SceneManager.LoadScene("LossScene");
+        }
         if (!backspaceHeld) return;
         if (Time.time >= nextDeleteTime)
         {

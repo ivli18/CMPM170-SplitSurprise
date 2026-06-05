@@ -13,7 +13,7 @@ public class TimerSystem : MonoBehaviour
     [SerializeField] private Image timerImageRight;
 
     [Header("[== SETTINGS ==]")]
-    [SerializeField] private float totalTime = 30f;
+    [SerializeField] private float totalTime = 40f;
 
     private float elapsed = 0f;
     private bool running = true;
@@ -60,7 +60,7 @@ public class TimerSystem : MonoBehaviour
     }
     IEnumerator PopupTime(float amount)
     {
-        popupText.fontSize = 36 + amount;
+        popupText.fontSize = 36 + (amount / 5);
         popupText.text = $"+ <color=green>{amount}s</color>";
         popupText.alpha = 1f;
         yield return new WaitForSeconds(0.5f);

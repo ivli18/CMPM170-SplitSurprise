@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
     [Header("Fade Transition")]
     public float fadeDuration = 3f;
 
-    private float masterVolume = 1f;
+    private float masterVolume = .5f;
     private Dictionary<MusicType, MusicSound> musicSoundDict = new();
     private Dictionary<SFXType, SFXSound> sfxSoundDict = new();
     private AudioSource musicSource;
