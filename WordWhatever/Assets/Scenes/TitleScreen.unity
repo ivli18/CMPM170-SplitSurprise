@@ -1084,13 +1084,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Input words must be <u>4 letters long</u>
+  m_text: '- Input words must be at least <u>4 letters long</u>
 
-    - Input words must contain
-    the <color=yellow>highlighted characters</color>
+    - Input words
+    must contain the <color=yellow>highlighted characters</color>
 
-    from the intake word <color=red><size=60>in
-    order!!!</color></size>'
+    from the intake
+    word <color=red><size=60>in order!!!</color></size>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8ac167b4d29235a4183a852f65af38e7, type: 2}
   m_sharedMaterial: {fileID: 3987946855937663755, guid: 0068713ac3108ea478faaf76bfbe8785, type: 2}

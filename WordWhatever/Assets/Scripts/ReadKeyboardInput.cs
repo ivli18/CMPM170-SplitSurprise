@@ -105,7 +105,7 @@ public class ReadKeyboardInput : MonoBehaviour
                 guessText.text = "";
                 gameManager.SubmittedWords.Add(guess.ToUpper());
                 gameManager.UpdateState();
-                timerSystem.AddTime(5f);
+                timerSystem.AddTime(8f);
                 // Checks if selected end letter is in word
                 if (guess.ToUpper().Contains(char.ToUpper(gameManager.EndWord[gameManager.EndLetterIndex])))
                 {

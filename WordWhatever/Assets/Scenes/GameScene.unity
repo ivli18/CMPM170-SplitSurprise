@@ -3029,7 +3029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1459871413
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3069,13 +3069,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Input words must be <u>4 letters long</u>
+  m_text: '- Input words must be at least <u>4 letters long</u>
 
-    - Input words must contain
-    the <color=yellow>highlighted characters</color>
+    - Input words
+    must contain the <color=yellow>highlighted characters</color>
 
-    from the intake word <color=red><size=60>in
-    order!!!</color></size>'
+    from the intake
+    word <color=red><size=60>in order!!!</color></size>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8ac167b4d29235a4183a852f65af38e7, type: 2}
   m_sharedMaterial: {fileID: 4484007517030407446, guid: 8ac167b4d29235a4183a852f65af38e7, type: 2}
@@ -3144,7 +3144,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1459871415
@@ -4693,7 +4693,7 @@ MonoBehaviour:
   popupText: {fileID: 2020251487}
   timerImageLeft: {fileID: 926449717}
   timerImageRight: {fileID: 1014948829}
-  totalTime: 40
+  totalTime: 45
   paused: 0
 --- !u!1 &2079731216
 GameObject:
